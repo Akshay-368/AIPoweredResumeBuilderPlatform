@@ -1,0 +1,6 @@
+@ResumeAI.FileParserToJSON_HostAddress = http://localhost:5111
+
+GET {{ResumeAI.FileParserToJSON_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
