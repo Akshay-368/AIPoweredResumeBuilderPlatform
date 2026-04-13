@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ResumeAI.ATSScore.API/ResumeAI.ATSScore.API.csproj" />
+  <Project Path="ResumeAI.Auth.API/ResumeAI.Auth.API.csproj" />
+  <Project Path="ResumeAI.FileParserToJSON/ResumeAI.FileParserToJSON.csproj" />
+  <Project Path="ResumeAI.Gateway/ResumeAI.Gateway.csproj" />
+</Solution>
