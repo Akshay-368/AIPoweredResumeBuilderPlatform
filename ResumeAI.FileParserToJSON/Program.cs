@@ -143,6 +143,8 @@ if (app.Environment.IsDevelopment())
    
 }
 
+app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
+
 app.UseHttpsRedirection();
 app.UseTimeLogging();
 app.UseAuthentication();
