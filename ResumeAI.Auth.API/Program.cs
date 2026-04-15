@@ -134,6 +134,7 @@ if (app.Environment.IsDevelopment())
 
 // Health endpoint for basic service checks.
 app.MapGet("/", () => "ResumeAI Auth API is running.");
+app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 app.UseTimeLogging();
 app.UseRateLimiter();
