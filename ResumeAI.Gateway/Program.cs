@@ -46,11 +46,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendCors" , policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:4200", // ANGULAR FRONTEND URL
-            "https://my-future-frontend-domain.com" // prod frontend URL
-        ).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-        //  using AllowCredentials() to allow cookies and auth headers, but be cautious with security implications in production
+        var frontendOrigin = Environment.GetEnvironmentVariable("FRONTEND_ORIGIN")
+            ?? "http://localhost:4200";
+
+        policy.WithOrigins(frontendOrigin)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
 
     });
 });
@@ -66,6 +68,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 app.UseHttpsRedirection();
 
