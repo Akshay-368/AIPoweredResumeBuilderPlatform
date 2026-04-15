@@ -140,6 +140,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
+
 app.UseHttpsRedirection();
 app.UseTimeLogging(); // Custom middleware to log request processing time
 app.UseAuthentication();
