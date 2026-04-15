@@ -78,3 +78,14 @@ _ReSharper*/
 # Others
 *.swp
 *.tmp
+*.env 
+node_modules/ 
+dist/ 
+build/ 
+bin/ 
+obj/ 
+*.log 
+*.tmp 
+*.cache 
+*.dll 
+*.exe 
