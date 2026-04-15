@@ -70,6 +70,8 @@ builder.Services.AddAuthorization();
 var persistenceConnectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
+persistenceConnectionString = NormalizePostgresConnectionString(persistenceConnectionString);
+
 if (!string.IsNullOrWhiteSpace(persistenceConnectionString))
 {
     builder.Services.AddDbContext<ProjectsDbContext>(options =>
@@ -150,3 +152,36 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static string? NormalizePostgresConnectionString(string? rawConnectionString)
+{
+    if (string.IsNullOrWhiteSpace(rawConnectionString))
+        return null;
+
+    if (rawConnectionString.Contains("Host=", StringComparison.OrdinalIgnoreCase))
+        return rawConnectionString;
+
+    if (Uri.TryCreate(rawConnectionString, UriKind.Absolute, out var uri)
+        && (uri.Scheme.Equals("postgres", StringComparison.OrdinalIgnoreCase)
+            || uri.Scheme.Equals("postgresql", StringComparison.OrdinalIgnoreCase)))
+    {
+        var database = uri.AbsolutePath.Trim('/');
+
+        var username = string.Empty;
+        var password = string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(uri.UserInfo))
+        {
+            var userParts = uri.UserInfo.Split(':', 2);
+            username = Uri.UnescapeDataString(userParts[0]);
+            if (userParts.Length > 1)
+                password = Uri.UnescapeDataString(userParts[1]);
+        }
+
+        var port = uri.IsDefaultPort ? 5432 : uri.Port;
+
+        return $"Host={uri.Host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true;";
+    }
+
+    return rawConnectionString;
+}
