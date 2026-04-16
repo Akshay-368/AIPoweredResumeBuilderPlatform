@@ -136,12 +136,12 @@ builder.Services.AddHttpClient<ProjectsPersistenceClient>(client =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
    
-}
+//}
 
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
