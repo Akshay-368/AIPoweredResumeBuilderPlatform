@@ -63,11 +63,11 @@ builder.Services.AddReverseProxy()
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
