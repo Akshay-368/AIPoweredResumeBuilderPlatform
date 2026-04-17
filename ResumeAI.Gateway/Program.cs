@@ -69,6 +69,8 @@ var app = builder.Build();
     app.UseSwaggerUI();
 //}
 
+// Health check endpoint for the services.
+app.MapGet("/" , () => "Resume Ai Gateway is running. Please go to the 'https://aipoweredresumebuilderfrontend-9xv2.onrender.com' for running the project" );
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 app.UseHttpsRedirection();
