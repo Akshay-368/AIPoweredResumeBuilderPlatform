@@ -143,6 +143,8 @@ var app = builder.Build();
    
 //}
 
+// Added health checkpoint
+app.MapGet("/" , ()=> "Resume ai file parser to json service is running." );
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 app.UseHttpsRedirection();
