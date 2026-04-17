@@ -142,6 +142,8 @@ if (!string.IsNullOrWhiteSpace(persistenceConnectionString))
     app.UseSwaggerUI();
 //}
 
+// Health check endpoint for this service
+app.MapGet("/" , () => "Resume Ai Ats score service is running. " );
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 app.UseHttpsRedirection();
