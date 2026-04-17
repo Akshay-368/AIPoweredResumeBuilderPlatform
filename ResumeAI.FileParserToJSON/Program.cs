@@ -133,6 +133,12 @@ builder.Services.AddHttpClient<ProjectsPersistenceClient>(client =>
 }).AddPolicyHandler(GetRetryPolicy())
     .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(45)));
 
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 5 * 1024 * 1024; // Set the maximum file size to 5 MB (adjust as needed)
+});
+// This MultipartBodyLengthLimit is a global setting that applies to all multipart form data in the application. It ensures that any file uploaded through a multipart form will be subject to this size limit , and it defaults to 128 Mb, which will be a lot for a resume, so I will use a constant to define the max file size and then check against it in the validation method.
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -143,8 +149,9 @@ var app = builder.Build();
    
 //}
 
-// Added health checkpoint
-app.MapGet("/" , ()=> "Resume ai file parser to json service is running." );
+
+// Health check endpoint
+app.MapGet("/" , () => Results.Ok(new { status = "ok" ,message = "Resume Parser API is running. Please go to the 'https://aipoweredresumebuilderfrontend-9xv2.onrender.com' for running the project."}  ));
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 
 app.UseHttpsRedirection();
